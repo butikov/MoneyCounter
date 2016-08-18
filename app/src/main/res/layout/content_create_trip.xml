@@ -38,9 +38,9 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Число участников"
         android:id="@+id/numberLabel"
-        android:layout_below="@+id/cityEdit"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_above="@+id/cityEdit"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -49,27 +49,27 @@
         android:ems="10"
         android:id="@+id/numberEdit"
         android:layout_below="@+id/numberLabel"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignLeft="@+id/numberLabel"
+        android:layout_alignStart="@+id/numberLabel" />
 
-    <LinearLayout
-        android:orientation="vertical"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/numberEdit"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/menLayout"></LinearLayout>
+        android:id="@+id/scrollView2"
+        android:layout_below="@+id/cityEdit"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Отмена"
-        android:id="@+id/cancelButton"
-        android:layout_alignBottom="@+id/menLayout"
-        android:layout_alignRight="@+id/cityEdit"
-        android:layout_alignEnd="@+id/cityEdit"
-        android:layout_marginBottom="50dp"
-        android:onClick="cancelButtonClicked" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/numberEdit"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/menLayout"></LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

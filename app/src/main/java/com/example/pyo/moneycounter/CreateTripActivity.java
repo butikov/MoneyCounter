@@ -1,9 +1,8 @@
 package com.example.pyo.moneycounter;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -12,9 +11,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class CreateTripActivity extends AppCompatActivity {
+
+    public static String city;
+    public static ArrayList<String> names;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,15 +24,6 @@ public class CreateTripActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_trip);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton okButton = (FloatingActionButton) findViewById(R.id.okButton);
-        okButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
         final EditText menNumber = (EditText) findViewById(R.id.numberEdit);
         assert menNumber != null;
         menNumber.setOnKeyListener(new View.OnKeyListener() {
@@ -39,12 +32,16 @@ public class CreateTripActivity extends AppCompatActivity {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     LinearLayout layout = (LinearLayout) findViewById(R.id.menLayout);
+                    assert layout != null;
+                    layout.removeAllViews();
                     int count = Integer.parseInt(menNumber.getText().toString());
                     for (int i = 0; i < count; ++i) {
                         TextView nextManLabel = new TextView(getApplicationContext());
                         nextManLabel.setText("Введите имя:");
+                        nextManLabel.setTextColor(Color.BLACK);
                         layout.addView(nextManLabel);
                         EditText nextMan = new EditText(getApplicationContext());
+                        nextMan.setId(i);
                         layout.addView(nextMan);
                     }
                     return true;
@@ -54,19 +51,33 @@ public class CreateTripActivity extends AppCompatActivity {
         });
     }
 
-    public void cancelButtonClicked(View view) {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
-
     public void okClicked(View view) {
         EditText cityEdit = (EditText) findViewById(R.id.cityEdit);
-        String city = cityEdit.getText().toString();
+        assert cityEdit != null;
+        city = cityEdit.getText().toString();
         EditText numberEdit = (EditText) findViewById(R.id.numberEdit);
+        assert numberEdit != null;
         int number = Integer.parseInt(numberEdit.getText().toString());
-        List<String> names;
+        LinearLayout layout = (LinearLayout) findViewById(R.id.menLayout);
+        names = new ArrayList<>();
         for (int i = 0; i < number; ++i) {
-
+            assert layout != null;
+            EditText nameEdit = (EditText) layout.findViewById(i);
+            String name = nameEdit.getText().toString();
+            for (String prevname : names
+                    ) {
+                if (name == prevname) {
+                    return;
+                }
+            }
+            names.add(name);
         }
+        if (city.isEmpty())
+            return;
+        Intent intent = new Intent();
+        intent.putExtra("newCity", city);
+        intent.putStringArrayListExtra("namesList", names);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }

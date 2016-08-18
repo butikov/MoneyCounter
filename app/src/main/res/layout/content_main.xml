@@ -12,12 +12,16 @@
     tools:context="com.example.pyo.moneycounter.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <GridView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/gridView"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        tools:listitem="@android:layout/simple_list_item_single_choice" />
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/tripsScroll"
+        android:layout_alignParentTop="true">
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tripsList"
+            android:choiceMode="singleChoice" />
+    </ScrollView>
 </RelativeLayout>

@@ -2,31 +2,43 @@ package com.example.pyo.moneycounter;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    ArrayAdapter<String> adapter;
+    ArrayList<String> tripNames;
+    private List<TripRelations> Trips;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Trips = new ArrayList<>();
+        tripNames = new ArrayList<>();
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton addTrip = (FloatingActionButton) findViewById(R.id.addTrip);
-        addTrip.setOnClickListener(new View.OnClickListener() {
+        ListView lv = (ListView) findViewById(R.id.tripsList);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, tripNames);
+        assert lv != null;
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, TripActivity.class);
+                intent.putExtra("currentTrip", Trips.get(position));
+                startActivity(intent);
             }
         });
+        lv.setAdapter(adapter);
     }
 
     @Override
@@ -51,8 +63,19 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onActivityResult(int RequestCode, int ResultCode, Intent data) {
+        if (data == null)
+            return;
+        String city = data.getStringExtra("newCity");
+        ArrayList<String> names = data.getStringArrayListExtra("namesList");
+        Trips.add(new TripRelations(city, names));
+        tripNames.add(city);
+        adapter.notifyDataSetChanged();
+    }
+
     public void addTripClicked(View view) {
         Intent intent = new Intent(this, CreateTripActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, 1);
     }
 }

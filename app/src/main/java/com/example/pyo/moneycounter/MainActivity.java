@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int RequestCode, int ResultCode, Intent data) {
-        if (data == null)
+        if (data == null || ResultCode != RESULT_OK)
             return;
         String city = data.getStringExtra("newCity");
         ArrayList<String> names = data.getStringArrayListExtra("namesList");

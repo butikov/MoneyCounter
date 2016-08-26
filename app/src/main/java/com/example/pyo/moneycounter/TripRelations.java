@@ -3,6 +3,8 @@ package com.example.pyo.moneycounter;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -24,23 +26,36 @@ public class TripRelations implements Parcelable {
     public String City;
     public ArrayList<String> Names;
     public int[] Debts;
-    public int peopleNumber;
+    public Integer peopleNumber;
 
-    public TripRelations(String city, ArrayList<String> names) {
+    public TripRelations(String city, ArrayList<String> names, int[] debts) {
         City = city;
-        Names = names;
+        Names = new ArrayList<>();
+        for (String name : names
+                ) {
+            Names.add(name);
+        }
         peopleNumber = names.size();
         Debts = new int[names.size() * names.size()];
-        for (Integer next : Debts
-                ) {
-            next = 0;
+        if (debts == null) {
+            for (int i = 0; i < peopleNumber * peopleNumber; ++i) {
+                Debts[i] = 0;
+            }
+        } else {
+            for (int i = 0; i < peopleNumber * peopleNumber; ++i) {
+                Debts[i] = debts[i];
+            }
         }
+    }
+
+    public TripRelations(String city, ArrayList<String> names) {
+        new TripRelations(city, names, null);
     }
 
     protected TripRelations(Parcel in) {
         City = in.readString();
         Names = in.createStringArrayList();
-        in.readIntArray(Debts);
+        Debts = in.createIntArray();
         peopleNumber = in.readInt();
     }
 
@@ -59,5 +74,20 @@ public class TripRelations implements Parcelable {
         dest.writeStringList(Names);
         dest.writeIntArray(Debts);
         dest.writeInt(peopleNumber);
+    }
+
+    public void saveCurrentState(BufferedWriter outputStreamWriter) {
+        try {
+            outputStreamWriter.write(peopleNumber.toString());
+            for (int i = 0; i < peopleNumber; ++i) {
+                outputStreamWriter.write(Names.get(i));
+            }
+            for (int i = 0; i < peopleNumber * peopleNumber; ++i) {
+                outputStreamWriter.write(Integer.toString(Debts[i]));
+            }
+            outputStreamWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

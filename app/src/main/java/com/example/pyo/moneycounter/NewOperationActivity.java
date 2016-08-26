@@ -35,7 +35,7 @@ public class NewOperationActivity extends AppCompatActivity {
                 if (isChecked) {
                     for (int i = 0; i < manNumber; ++i) {
                         CheckBox debtorCheck = (CheckBox) debtorsLayout.findViewById(i * 2);
-                        debtorCheck.setEnabled(true);
+                        debtorCheck.setChecked(true);
                     }
                 }
             }
@@ -90,14 +90,15 @@ public class NewOperationActivity extends AppCompatActivity {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     assert payersLayout != null;
-                    EditText edit = (EditText) payersLayout.findViewWithTag(buttonView.getId() + 1);
-                    if (edit.isEnabled()) {
+                    EditText edit = (EditText) payersLayout.findViewById(buttonView.getId() + 1);
+
+                    String paidstr = edit.getText().toString();
+                    if (!paidstr.isEmpty()) {
                         int paid = Integer.parseInt(edit.getText().toString());
-                        paysSum -= paid;
-                        paidChanged();
-                    } else {
-                        int paid = Integer.parseInt(edit.getText().toString());
-                        paysSum += paid;
+                        if (edit.isEnabled())
+                            paysSum -= paid;
+                        else
+                            paysSum += paid;
                         paidChanged();
                     }
                     edit.setEnabled(isChecked);
@@ -134,7 +135,18 @@ public class NewOperationActivity extends AppCompatActivity {
                 //TODO
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+                    assert debtorsLayout != null;
+                    EditText edit = (EditText) debtorsLayout.findViewById(buttonView.getId() + 1);
+                    String str = edit.getText().toString();
+                    if (!str.isEmpty()) {
+                        int debt = Integer.parseInt(str);
+                        if (edit.isEnabled()) {
+                            debtsSum -= debt;
+                        } else {
+                            debtsSum += debt;
+                        }
+                    }
+                    edit.setEnabled(isChecked);
                 }
             });
             assert debtorsLayout != null;

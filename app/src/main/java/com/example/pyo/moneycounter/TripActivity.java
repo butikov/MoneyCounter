@@ -8,6 +8,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.OutputStreamWriter;
+
 public class TripActivity extends AppCompatActivity {
 
     private TripRelations currentTrip;
@@ -20,6 +24,7 @@ public class TripActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Intent intent = getIntent();
         currentTrip = intent.getParcelableExtra("currentTrip");
+        currentTrip.peopleNumber = currentTrip.Names.size();
         updateRelationsView();
     }
 
@@ -50,5 +55,13 @@ public class TripActivity extends AppCompatActivity {
             return;
         int[] operations = data.getIntArrayExtra("pays");
         updateRelationsView();
+        try {
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
+                    openFileOutput(currentTrip.City, MODE_PRIVATE)));
+            currentTrip.saveCurrentState(bw);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
     }
 }

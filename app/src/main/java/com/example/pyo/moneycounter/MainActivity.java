@@ -34,9 +34,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getApplicationContext();
-        File trips = new File("/Trips");
+        Trips = new ArrayList<>();
+        tripNames = new ArrayList<>();
+        setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Список путешествий");
+        setSupportActionBar(toolbar);
+        ListView lv = (ListView) findViewById(R.id.tripsList);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tripNames);
+        File trips = new File(context.getFilesDir(), "trips");
         trips.mkdirs();
-
         for (File f : trips.listFiles()
                 ) {
             try {
@@ -69,14 +76,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
-
-        Trips = new ArrayList<>();
-        tripNames = new ArrayList<>();
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ListView lv = (ListView) findViewById(R.id.tripsList);
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tripNames);
         assert lv != null;
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -118,19 +117,23 @@ public class MainActivity extends AppCompatActivity {
         if (RequestCode == 1) {
             String city = data.getStringExtra("newCity");
             ArrayList<String> names = data.getStringArrayListExtra("namesList");
-            TripRelations newTip = new TripRelations(city, names);
+            TripRelations newTip;
+            newTip = new TripRelations(city, names);
             Trips.add(newTip);
-            File trips = new File("/Trips");
+            File trips = new File(context.getFilesDir(), "trips");
             trips.mkdirs();
             File file = new File(trips, city);
             try {
                 BufferedWriter outputStreamWriter = new BufferedWriter(new FileWriter(file));
                 outputStreamWriter.write(Integer.toString(newTip.peopleNumber));
+                outputStreamWriter.newLine();
                 for (int i = 0; i < newTip.peopleNumber; ++i) {
                     outputStreamWriter.write(newTip.Names.get(i));
+                    outputStreamWriter.newLine();
                 }
                 for (int i = 0; i < newTip.peopleNumber * newTip.peopleNumber; ++i) {
                     outputStreamWriter.write(Integer.toString(newTip.Debts[i]));
+                    outputStreamWriter.newLine();
                 }
                 outputStreamWriter.close();
             } catch (FileNotFoundException e) {

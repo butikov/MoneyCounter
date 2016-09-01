@@ -26,6 +26,7 @@ public class NewOperationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_operation);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Добавить операцию");
         setSupportActionBar(toolbar);
         CheckBox allDebt = (CheckBox) findViewById(R.id.allDebt);
         assert allDebt != null;
@@ -91,7 +92,6 @@ public class NewOperationActivity extends AppCompatActivity {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     assert payersLayout != null;
                     EditText edit = (EditText) payersLayout.findViewById(buttonView.getId() + 1);
-
                     String paidstr = edit.getText().toString();
                     if (!paidstr.isEmpty()) {
                         int paid = Integer.parseInt(edit.getText().toString());
@@ -117,7 +117,7 @@ public class NewOperationActivity extends AppCompatActivity {
                             CheckBox paysCheck = (CheckBox) payersLayout.findViewById(i * 2);
                             if (paysCheck.isChecked()) {
                                 EditText paysEdit = (EditText) payersLayout.findViewById(i * 2 + 1);
-                                debtsSum += Integer.parseInt(paysEdit.getText().toString());
+                                paysSum += Integer.parseInt(paysEdit.getText().toString());
                             }
                         }
                         return true;
@@ -126,6 +126,7 @@ public class NewOperationActivity extends AppCompatActivity {
                 }
             });
             payerNumber.setEnabled(false);
+            payerNumber.setText("0");
             payersLayout.addView(payerNumber);
 
             CheckBox debtorsBox = new CheckBox(this);
@@ -173,6 +174,7 @@ public class NewOperationActivity extends AppCompatActivity {
                     return false;
                 }
             });
+            debtorNumber.setText("0");
             debtorsLayout.addView(debtorNumber);
             nextId += 2;
         }
@@ -194,9 +196,9 @@ public class NewOperationActivity extends AppCompatActivity {
                 int number = Integer.parseInt(payerEdit.getText().toString());
                 if (number <= 0)
                     return;
-                pays[i] = number;
+                pays[manNumber + i / 2] = number;
             } else
-                pays[i] = 0;
+                pays[manNumber + i / 2] = 0;
 
             assert debtorsLayout != null;
             debtorBox = (CheckBox) debtorsLayout.findViewById(i);
@@ -205,12 +207,10 @@ public class NewOperationActivity extends AppCompatActivity {
                 int number = Integer.parseInt(debtorView.getText().toString());
                 if (number <= 0)
                     return;
-                pays[manNumber + i] = number;
+                pays[i / 2] = number;
             } else
-                pays[manNumber + i] = 0;
+                pays[i / 2] = 0;
         }
-
-
         Intent intent = new Intent();
         intent.putExtra("pays", pays);
         setResult(RESULT_OK, intent);

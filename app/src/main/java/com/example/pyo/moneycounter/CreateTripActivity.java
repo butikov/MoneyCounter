@@ -23,6 +23,7 @@ public class CreateTripActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_trip);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Добавить путешествие");
         setSupportActionBar(toolbar);
         final EditText menNumber = (EditText) findViewById(R.id.numberEdit);
         assert menNumber != null;

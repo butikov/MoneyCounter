@@ -28,6 +28,7 @@ public class TripRelations implements Parcelable {
     public int[] Debts;
     public Integer peopleNumber;
 
+
     public TripRelations(String city, ArrayList<String> names, int[] debts) {
         City = city;
         Names = new ArrayList<>();
@@ -42,14 +43,12 @@ public class TripRelations implements Parcelable {
                 Debts[i] = 0;
             }
         } else {
-            for (int i = 0; i < peopleNumber * peopleNumber; ++i) {
-                Debts[i] = debts[i];
-            }
+            System.arraycopy(debts, 0, Debts, 0, peopleNumber * peopleNumber);
         }
     }
 
     public TripRelations(String city, ArrayList<String> names) {
-        new TripRelations(city, names, null);
+        this(city, names, null);
     }
 
     protected TripRelations(Parcel in) {
@@ -79,11 +78,14 @@ public class TripRelations implements Parcelable {
     public void saveCurrentState(BufferedWriter outputStreamWriter) {
         try {
             outputStreamWriter.write(peopleNumber.toString());
+            outputStreamWriter.newLine();
             for (int i = 0; i < peopleNumber; ++i) {
                 outputStreamWriter.write(Names.get(i));
+                outputStreamWriter.newLine();
             }
             for (int i = 0; i < peopleNumber * peopleNumber; ++i) {
                 outputStreamWriter.write(Integer.toString(Debts[i]));
+                outputStreamWriter.newLine();
             }
             outputStreamWriter.close();
         } catch (IOException e) {

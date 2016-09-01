@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         context = getApplicationContext();
         File trips = new File("/Trips");
         trips.mkdirs();
-        
+
         for (File f : trips.listFiles()
                 ) {
             try {

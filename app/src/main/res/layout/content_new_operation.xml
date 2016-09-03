@@ -22,7 +22,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
@@ -40,7 +40,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:columnCount="2"
-                android:orientation="horizontal"></GridLayout>
+                android:orientation="horizontal" />
 
             <TextView
                 android:id="@+id/debtorsLabel"
@@ -56,19 +56,24 @@
                 android:columnCount="2"
                 android:orientation="horizontal">
 
-                <CheckBox
-                    android:id="@+id/allDebt"
+                <Button
+                    android:id="@+id/allCheck"
+                    style="?android:attr/buttonStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="false"
+                    android:layout_column="0"
+                    android:layout_row="0"
                     android:text="За всех" />
 
                 <CheckBox
                     android:id="@+id/allEqual"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:layout_row="0"
                     android:checked="false"
                     android:text="Поровну" />
+
             </GridLayout>
         </LinearLayout>
     </ScrollView>

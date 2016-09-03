@@ -12,16 +12,10 @@
     tools:context="com.example.pyo.moneycounter.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <ScrollView
+    <ListView
+        android:id="@+id/tripsList"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/tripsScroll"
-        android:layout_alignParentTop="true">
+        android:choiceMode="singleChoice" />
 
-        <ListView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tripsList"
-            android:choiceMode="singleChoice" />
-    </ScrollView>
 </RelativeLayout>

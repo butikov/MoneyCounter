@@ -21,13 +21,14 @@ public class TripActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_trip);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Список долгов");
-        setSupportActionBar(toolbar);
         Intent intent = getIntent();
         currentTrip = intent.getParcelableExtra("currentTrip");
         currentTrip.peopleNumber = currentTrip.Names.size();
+        setContentView(R.layout.activity_trip);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        assert toolbar != null;
+        toolbar.setTitle(currentTrip.City);
+        setSupportActionBar(toolbar);
         updateRelationsView();
     }
 

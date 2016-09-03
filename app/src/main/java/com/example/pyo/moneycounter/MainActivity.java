@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     ArrayList<String> tripNames;
     Context context;
+    ListView tripsList;
     private ArrayList<TripRelations> Trips = new ArrayList<>();
 
     @Override
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Список путешествий");
         setSupportActionBar(toolbar);
-        ListView lv = (ListView) findViewById(R.id.tripsList);
+        tripsList = (ListView) findViewById(R.id.tripsList);
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tripNames);
         File trips = new File(context.getFilesDir(), "trips");
         trips.mkdirs();
@@ -76,8 +78,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
-        assert lv != null;
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        assert tripsList != null;
+        tripsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(MainActivity.this, TripActivity.class);
@@ -85,9 +87,32 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, 2);
             }
         });
-        lv.setAdapter(adapter);
+        tripsList.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
+            @Override
+            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                menu.add(Menu.NONE, 0, Menu.NONE, "Открыть");
+                menu.add(Menu.NONE, 1, Menu.NONE, "Редактировать");
+                menu.add(Menu.NONE, 2, Menu.NONE, "Удалить");
+            }
+
+        });
+        tripsList.setAdapter(adapter);
     }
 
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getItemId()) {
+            case 0:
+                tripsList.removeViewAt((int) info.id);
+                return true;
+            case 1:
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

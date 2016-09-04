@@ -17,7 +17,6 @@ import android.widget.ListView;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -105,9 +104,19 @@ public class MainActivity extends AppCompatActivity {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         switch (item.getItemId()) {
             case 0:
-                tripsList.removeViewAt((int) info.id);
+                Intent intent = new Intent(MainActivity.this, TripActivity.class);
+                intent.putExtra("currentTrip", Trips.get((int) info.id));
+                startActivityForResult(intent, 2);
                 return true;
             case 1:
+                return true;
+            case 2:
+                File trips = new File(context.getFilesDir(), "trips");
+                File thisTrip = new File(trips, tripNames.get((int) info.id));
+                thisTrip.delete();
+                tripNames.remove((int) info.id);
+                adapter.notifyDataSetChanged();
+
                 return true;
             default:
                 return super.onContextItemSelected(item);
@@ -150,19 +159,7 @@ public class MainActivity extends AppCompatActivity {
             File file = new File(trips, city);
             try {
                 BufferedWriter outputStreamWriter = new BufferedWriter(new FileWriter(file));
-                outputStreamWriter.write(Integer.toString(newTip.peopleNumber));
-                outputStreamWriter.newLine();
-                for (int i = 0; i < newTip.peopleNumber; ++i) {
-                    outputStreamWriter.write(newTip.Names.get(i));
-                    outputStreamWriter.newLine();
-                }
-                for (int i = 0; i < newTip.peopleNumber * newTip.peopleNumber; ++i) {
-                    outputStreamWriter.write(Integer.toString(newTip.Debts[i]));
-                    outputStreamWriter.newLine();
-                }
-                outputStreamWriter.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+                newTip.saveCurrentState(outputStreamWriter);
             } catch (IOException e) {
                 e.printStackTrace();
             }

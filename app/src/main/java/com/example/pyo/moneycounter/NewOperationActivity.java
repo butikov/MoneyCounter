@@ -67,7 +67,18 @@ public class NewOperationActivity extends AppCompatActivity {
                 paidChanged();
             }
         });
-
+        Button allUncheck = (Button) findViewById(R.id.allUncheck);
+        assert allUncheck != null;
+        allUncheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (int i = 0; i < manNumber; ++i) {
+                    CheckBox debtorCheck = (CheckBox) debtorsLayout.findViewById(i * 2);
+                    debtorCheck.setChecked(false);
+                    paidChanged();
+                }
+            }
+        });
         int nextId = 0;
         for (String name : names) {
             CheckBox payerBox = new CheckBox(this);
@@ -154,6 +165,7 @@ public class NewOperationActivity extends AppCompatActivity {
                     if (!allEquals) {
                         edit.setEnabled(isChecked);
                     }
+                    paidChanged();
                 }
             });
             assert debtorsLayout != null;

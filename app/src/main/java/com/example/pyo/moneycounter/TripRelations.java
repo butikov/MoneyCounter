@@ -10,6 +10,8 @@ import java.util.ArrayList;
 /**
  * Created by pyo on 18.08.2016.
  */
+
+//TODO: Replace int[] with graph library
 public class TripRelations implements Parcelable {
 
     public static final Creator<TripRelations> CREATOR = new Creator<TripRelations>() {
@@ -23,11 +25,10 @@ public class TripRelations implements Parcelable {
             return new TripRelations[size];
         }
     };
-    public String City;
-    public ArrayList<String> Names;
-    public int[] Debts;
-    public Integer peopleNumber;
-
+    private String City;
+    private ArrayList<String> Names;
+    private int[] Debts;
+    private Integer peopleNumber;
 
     public TripRelations(String city, ArrayList<String> names, int[] debts) {
         City = city;
@@ -56,6 +57,22 @@ public class TripRelations implements Parcelable {
         Names = in.createStringArrayList();
         Debts = in.createIntArray();
         peopleNumber = in.readInt();
+    }
+
+    public Integer getPeopleNumber() {
+        return peopleNumber;
+    }
+
+    public ArrayList<String> getNamesList() {
+        return Names;
+    }
+
+    public String getName(int i) {
+        return Names.get(i);
+    }
+
+    public Integer getDebt(int i) {
+        return Debts[i];
     }
 
     public String getCityName() {
@@ -90,6 +107,63 @@ public class TripRelations implements Parcelable {
             outputStreamWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void simplify() {
+        for (int k = 0; k < peopleNumber; ++k) {
+            for (int i = 0; i < peopleNumber * peopleNumber; ++i) {
+                if (Debts[i] > 0) {
+                    int second = i % peopleNumber;
+                    for (int third = 0; third < peopleNumber; ++third) {
+                        if (Debts[second * peopleNumber + third] > 0) {
+                            int newDebt = Math.min(Debts[i],
+                                    Debts[second * peopleNumber + third]);
+                            int first = i / peopleNumber;
+
+                            Debts[i] -= newDebt;
+                            Debts[second * peopleNumber + first] += newDebt;
+
+                            Debts[second * peopleNumber + third] -= newDebt;
+                            Debts[third * peopleNumber + second] += newDebt;
+
+                            Debts[first * peopleNumber + third] += newDebt;
+                            Debts[third * peopleNumber + first] -= newDebt;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void addOperation(int[] operations) {
+        for (int i = 0; i < peopleNumber; ++i) {
+            if (operations[i] > 0)
+                for (int j = 0; j < peopleNumber; ++j) {
+                    if (operations[j + peopleNumber] > 0 && Debts[i * peopleNumber + j] != 0) {
+                        int debt = Math.min(operations[i], operations[j + peopleNumber]);
+                        Debts[i * peopleNumber + j] += debt;
+                        Debts[j * peopleNumber + i] -= debt;
+                        operations[i] -= debt;
+                        operations[j + peopleNumber] -= debt;
+                        if (operations[i] == 0)
+                            break;
+                    }
+                }
+        }
+        for (int i = 0; i < peopleNumber; ++i) {
+            if (operations[i] > 0)
+                for (int j = 0; j < peopleNumber; ++j) {
+                    if (operations[j + peopleNumber] > 0) {
+                        int debt = Math.min(operations[i], operations[j + peopleNumber]);
+                        Debts[i * peopleNumber + j] += debt;
+                        Debts[j * peopleNumber + i] -= debt;
+                        operations[i] -= debt;
+                        operations[j + peopleNumber] -= debt;
+                        if (operations[i] == 0)
+                            break;
+                    }
+                }
         }
     }
 }

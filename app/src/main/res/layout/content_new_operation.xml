@@ -63,16 +63,35 @@
                     android:layout_height="wrap_content"
                     android:layout_column="0"
                     android:layout_row="0"
-                    android:text="За всех" />
+                    android:background="@android:color/transparent"
+                    android:text="Выделить всех   " />
+
+                <Button
+                    android:id="@+id/allUncheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/allUncheck"
+                    android:background="@android:color/transparent"
+                    android:text="Снять выделение" />
 
                 <CheckBox
                     android:id="@+id/allEqual"
+                    android:layout_below="@+id/allUncheck"
+                    android:layout_column="0"
+                    android:layout_row="1"
+                    android:layout_toLeftOf="@+id/allUncheck"
+                    android:layout_toStartOf="@+id/allUncheck"
+                    android:checked="false"
+                    android:text="Поровну" />
+
+                <TextView
+                    android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="1"
-                    android:layout_row="0"
-                    android:checked="false"
-                    android:text="Поровну" />
+                    android:layout_row="1" />
 
             </GridLayout>
         </LinearLayout>

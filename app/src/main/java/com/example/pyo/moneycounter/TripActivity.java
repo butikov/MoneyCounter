@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -48,7 +47,7 @@ public class TripActivity extends AppCompatActivity {
                 int second = i % currentTrip.peopleNumber;
                 TextView newDebt = new TextView(this);
                 newDebt.setText(currentTrip.Names.get(first) + " должен " + currentTrip.Debts[i] +
-                        " рублей " + currentTrip.Names.get(second));
+                        moneyEnd(currentTrip.Debts[i] % 100) + accusative(currentTrip.Names.get(second)));
                 relations.addView(newDebt);
             }
     }
@@ -67,7 +66,7 @@ public class TripActivity extends AppCompatActivity {
                         currentTrip.Debts[i * currentTrip.peopleNumber + j] += debt;
                         currentTrip.Debts[j * currentTrip.peopleNumber + i] -= debt;
                         operations[i] -= debt;
-                        operations[j] -= debt;
+                        operations[j + currentTrip.peopleNumber] -= debt;
                         if (operations[i] == 0)
                             break;
                     }
@@ -81,7 +80,7 @@ public class TripActivity extends AppCompatActivity {
                         currentTrip.Debts[i * currentTrip.peopleNumber + j] += debt;
                         currentTrip.Debts[j * currentTrip.peopleNumber + i] -= debt;
                         operations[i] -= debt;
-                        operations[j] -= debt;
+                        operations[j + currentTrip.peopleNumber] -= debt;
                         if (operations[i] == 0)
                             break;
                     }
@@ -96,8 +95,6 @@ public class TripActivity extends AppCompatActivity {
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(file));
             currentTrip.saveCurrentState(bw);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -126,5 +123,36 @@ public class TripActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    private String accusative(String name) {
+        String result = "";
+        String[] nameParts = name.split(" ");
+        for (String namePart : nameParts) {
+            if (namePart.endsWith("ец") || namePart.endsWith("ац") || namePart.endsWith("о") ||
+                    namePart.endsWith("и") || namePart.endsWith("ы") || namePart.endsWith("е") ||
+                    namePart.endsWith("э") || namePart.endsWith("ё")) {
+                result += namePart + " ";
+                continue;
+            }
+            if (namePart.endsWith("й")) {
+                result += namePart.substring(0, name.length() - 1) + "ю ";
+                continue;
+            }
+            if (namePart.endsWith("а") || namePart.endsWith("я")) {
+                result += namePart.substring(0, name.length() - 1) + "е ";
+                continue;
+            }
+            result += namePart + "у ";
+        }
+        return result;
+    }
+
+    private String moneyEnd(int money) {
+        if (money != 11 && money % 10 == 1)
+            return " рубль ";
+        if (((money < 5) || (money > 20)) && (money % 10) > 1 && (money % 10) < 5)
+            return " рубля ";
+        return " рублей ";
     }
 }

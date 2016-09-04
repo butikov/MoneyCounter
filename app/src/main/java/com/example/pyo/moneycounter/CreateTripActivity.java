@@ -70,6 +70,17 @@ public class CreateTripActivity extends AppCompatActivity {
         EditText cityEdit = (EditText) findViewById(R.id.cityEdit);
         assert cityEdit != null;
         city = cityEdit.getText().toString().trim();
+        if (city.isEmpty()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Не задано навзвание!").setPositiveButton("Понятно",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+            builder.show();
+            return;
+        }
         EditText numberEdit = (EditText) findViewById(R.id.numberEdit);
         assert numberEdit != null;
         int number = 0;
@@ -86,15 +97,27 @@ public class CreateTripActivity extends AppCompatActivity {
             builder.show();
             return;
         }
+        if (number < 3) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Использование данного приложения в Вашем случае бессмысленно, справитесь и сами.");
+            builder.setPositiveButton("Понятно", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            });
+            builder.show();
+            return;
+        }
         LinearLayout layout = (LinearLayout) findViewById(R.id.menLayout);
         names = new ArrayList<>();
         for (Integer i = 0; i < number; ++i) {
             assert layout != null;
             EditText nameEdit = (EditText) layout.findViewById(i);
             String name = nameEdit.getText().toString().trim();
+            Integer i1 = i + 1;
             if (name.isEmpty()) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("Не задано имя " + i.toString() + " участника").setPositiveButton("Понятно",
+                builder.setMessage("Не задано имя " + i1.toString() + " участника").setPositiveButton("Понятно",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -106,8 +129,9 @@ public class CreateTripActivity extends AppCompatActivity {
             for (Integer j = 0; j < names.size(); ++j) {
                 if (name.equals(names.get(j))) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setMessage("Имя " + i.toString() + " участника совпадает с именем " +
-                            j.toString() + " участника").setPositiveButton("Понятно", new DialogInterface.OnClickListener() {
+                    Integer j1 = j + 1;
+                    builder.setMessage("Имя " + i1.toString() + " участника совпадает с именем " +
+                            j1.toString() + " участника").setPositiveButton("Понятно", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                         }
@@ -117,17 +141,6 @@ public class CreateTripActivity extends AppCompatActivity {
                 }
             }
             names.add(name);
-        }
-        if (city.isEmpty()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Не задано навзвание!").setPositiveButton("Понятно",
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
-                    });
-            builder.show();
-            return;
         }
         Intent intent = new Intent();
         intent.putExtra("newCity", city);

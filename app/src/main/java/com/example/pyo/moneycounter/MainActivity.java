@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         tripNames = new ArrayList<>();
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        assert toolbar != null;
         toolbar.setTitle("Список путешествий");
         setSupportActionBar(toolbar);
         tripsList = (ListView) findViewById(R.id.tripsList);
@@ -155,7 +156,6 @@ public class MainActivity extends AppCompatActivity {
             newTip = new TripRelations(city, names);
             Trips.add(newTip);
             File trips = new File(context.getFilesDir(), "trips");
-            trips.mkdirs();
             File file = new File(trips, city);
             try {
                 BufferedWriter outputStreamWriter = new BufferedWriter(new FileWriter(file));

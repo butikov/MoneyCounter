@@ -14,87 +14,99 @@
 
     <ScrollView
         android:id="@+id/scrollView"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true">
 
-        <LinearLayout
+        <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/payersLabel"
+                android:id="@+id/payerLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_column="2"
                 android:text="Кто платил"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <GridLayout
                 android:id="@+id/payersTable"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/payerLabel"
                 android:columnCount="2"
-                android:orientation="horizontal" />
+                android:orientation="horizontal"></GridLayout>
 
             <TextView
                 android:id="@+id/debtorsLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/payersTable"
                 android:text="За кого"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
-            <GridLayout
-                android:id="@+id/debtorsTable"
+            <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:columnCount="2"
-                android:orientation="horizontal">
+                android:layout_height="match_parent">
 
                 <Button
                     android:id="@+id/allCheck"
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_column="0"
-                    android:layout_row="0"
-                    android:background="@android:color/transparent"
-                    android:text="Выделить всех   " />
+                    android:layout_alignLeft="@+id/debtorsLabel"
+                    android:layout_alignStart="@+id/debtorsLabel"
+                    android:layout_below="@+id/debtorsLabel"
+                    android:background="#00ffffff"
+                    android:text="Выделить всех   "
+                    android:textColor="#2898ae" />
 
                 <Button
                     android:id="@+id/allUncheck"
+                    style="?android:attr/buttonStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@+id/allUncheck"
-                    android:background="@android:color/transparent"
-                    android:text="Снять выделение" />
-
-                <CheckBox
-                    android:id="@+id/allEqual"
-                    android:layout_below="@+id/allUncheck"
-                    android:layout_column="0"
-                    android:layout_row="1"
-                    android:layout_toLeftOf="@+id/allUncheck"
-                    android:layout_toStartOf="@+id/allUncheck"
-                    android:checked="false"
-                    android:text="Поровну" />
-
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/allCheck"
                     android:layout_column="1"
-                    android:layout_row="1" />
+                    android:layout_toEndOf="@+id/allCheck"
+                    android:layout_toRightOf="@+id/allCheck"
+                    android:background="#00ffffff"
+                    android:text="Снять выделение"
+                    android:textColor="#2898ae" />
 
-            </GridLayout>
-        </LinearLayout>
+            </TableRow>
+
+            <CheckBox
+                android:id="@+id/allEqual"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:text="ПОРОВНУ"
+                android:textColor="#2898ae" />
+
+            <GridLayout
+                android:id="@+id/debtorsTable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/allEqual"
+                android:columnCount="2"
+                android:orientation="horizontal"></GridLayout>
+
+        </TableLayout>
     </ScrollView>
 
 </RelativeLayout>

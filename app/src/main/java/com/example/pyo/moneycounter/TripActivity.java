@@ -61,7 +61,6 @@ public class TripActivity extends AppCompatActivity {
         currentTrip.simplify();
         updateRelationsView();
         File trips = new File(getApplicationContext().getFilesDir(), "trips");
-        trips.mkdirs();
         File file = new File(trips, currentTrip.getCityName());
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(file));

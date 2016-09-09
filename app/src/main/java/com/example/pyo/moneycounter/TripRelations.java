@@ -117,8 +117,7 @@ public class TripRelations implements Parcelable {
                     int second = i % peopleNumber;
                     for (int third = 0; third < peopleNumber; ++third) {
                         if (Debts[second * peopleNumber + third] > 0) {
-                            int newDebt = Math.min(Debts[i],
-                                    Debts[second * peopleNumber + third]);
+                            int newDebt = Math.min(Debts[i], Debts[second * peopleNumber + third]);
                             int first = i / peopleNumber;
 
                             Debts[i] -= newDebt;
@@ -129,6 +128,7 @@ public class TripRelations implements Parcelable {
 
                             Debts[first * peopleNumber + third] += newDebt;
                             Debts[third * peopleNumber + first] -= newDebt;
+
                         }
                     }
                 }
@@ -152,15 +152,15 @@ public class TripRelations implements Parcelable {
                 }
         }
         for (int i = 0; i < peopleNumber; ++i) {
-            if (operations[i] > 0)
+            if (operations[i + peopleNumber] > 0)
                 for (int j = 0; j < peopleNumber; ++j) {
-                    if (operations[j + peopleNumber] > 0) {
-                        int debt = Math.min(operations[i], operations[j + peopleNumber]);
-                        Debts[i * peopleNumber + j] += debt;
-                        Debts[j * peopleNumber + i] -= debt;
-                        operations[i] -= debt;
-                        operations[j + peopleNumber] -= debt;
-                        if (operations[i] == 0)
+                    if (operations[j] > 0) {
+                        int debt = Math.min(operations[i + peopleNumber], operations[j]);
+                        Debts[j * peopleNumber + i] += debt;
+                        Debts[i * peopleNumber + j] -= debt;
+                        operations[i + peopleNumber] -= debt;
+                        operations[j] -= debt;
+                        if (operations[i + peopleNumber] == 0)
                             break;
                     }
                 }
